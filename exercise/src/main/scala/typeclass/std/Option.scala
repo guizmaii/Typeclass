@@ -1,6 +1,6 @@
 package typeclass.std
 
-import typeclass.Semigroup
+import typeclass.{Monoid, Semigroup}
 
 object option {
 
@@ -11,6 +11,16 @@ object option {
       case (None, Some(_))    => y
       case (Some(a), Some(b)) => Some(ev.combine(a, b))
     }
+  }
+
+  implicit def optionMonoid[A](implicit ev: Monoid[A]): Monoid[Option[A]] = new Monoid[Option[A]] {
+    def combine(x: Option[A], y: Option[A]): Option[A] = (x, y) match {
+      case (None, None)       => None
+      case (Some(_), None)    => x
+      case (None, Some(_))    => y
+      case (Some(a), Some(b)) => Some(ev.combine(a, b))
+    }
+    override def empty: Option[A] = None
   }
 
 }
