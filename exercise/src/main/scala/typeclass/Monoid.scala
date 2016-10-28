@@ -19,9 +19,9 @@ case class MonoidLaws[A](implicit ev: Monoid[A]) {
   import scalaprops.{Gen, Properties, Property}
   import scalaz.std.string._
 
-  def leftIdentity(implicit genA: Gen[A]): Property = forAll((x: A) => ev.empty.combine(x) == x)
+  def leftIdentity(implicit genA: Gen[A]): Property = forAll((a: A) => ev.empty.combine(a) == a)
 
-  def rightIdentity(implicit genA: Gen[A]): Property = forAll((x: A) => x.combine(ev.empty) == x)
+  def rightIdentity(implicit genA: Gen[A]): Property = forAll((a: A) => a.combine(ev.empty) == a)
 
   def laws(implicit genA: Gen[A]): Properties[String] =
     properties("Monoid")(
