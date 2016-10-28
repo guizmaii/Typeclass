@@ -6,6 +6,8 @@ import scalaprops.Scalaprops
 
 object IntTest extends Scalaprops {
 
-//  val semigroup = SemigroupLaws[Int].all
+  import typeclass.std.int._
+
+  val semigroup = SemigroupLaws[Int].all
 
 }
