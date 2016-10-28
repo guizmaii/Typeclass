@@ -3,9 +3,11 @@ package typeclass
 trait Functor[F[_]] {
   def map[A, B](fa: F[A])(f: A => B): F[B]
 
-  def void[A](fa: F[A]): F[Unit] = ???
-  def as[A, B](fa: F[A], b: B): F[B] = ???
-  def lift[A, B](f: A => B): F[A] => F[B] = ???
+  // Come fron here: http://stackoverflow.com/a/30748249
+  def void[A](fa: F[A]): F[Unit] = map(fa){ a => val _ = a }
+
+  def as[A, B](fa: F[A], b: B): F[B] = map(fa)(_ => b)
+  def lift[A, B](f: A => B): F[A] => F[B] = (fa: F[A]) => map(fa)(f)
 }
 
 object Functor {
