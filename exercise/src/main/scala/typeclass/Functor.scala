@@ -21,7 +21,9 @@ case class FunctorLaws[F[_]](implicit ev: Functor[F]) {
 
   def mapId[A](implicit genFA: Gen[F[A]]) = ???
 
-  def mapFusion[A, B, C](implicit genFA: Gen[F[A]], genAB: Gen[A => B], genBC: Gen[B => C]) = ???
+  def mapFusion[A, B, C](implicit genFA: Gen[F[A]], genAB: Gen[A => B], genBC: Gen[B => C]) = {
+    forAll((fa: F[A], f: A => B, g: B => C) => fa.map(f).map(g) == fa.map(f andThen g))
+  }
 
   def all(implicit genFI: Gen[F[Int]], genF: Gen[Int => Int]) =
     properties("Functor")(
