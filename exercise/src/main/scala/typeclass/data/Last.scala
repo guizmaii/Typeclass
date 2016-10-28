@@ -10,12 +10,7 @@ object Last {
   implicit def gen[A: Gen]: Gen[Last[A]] = Gen[Option[A]].map(Last(_))
 
   implicit def semigroup[A]: Semigroup[Last[A]] = new Semigroup[Last[A]] {
-    def combine(x: Last[A], y: Last[A]): Last[A] = (x.value, y.value) match {
-      case (None, None) => Last.empty
-      case (Some(_), None) => x
-      case (None, Some(_)) => y
-      case (Some(_), Some(_)) => y
-    }
+    def combine(x: Last[A], y: Last[A]): Last[A] = Last(y.value.orElse(x.value))
   }
 
   def empty[A] = Last(None: Option[A])
