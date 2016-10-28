@@ -1,6 +1,6 @@
 package typeclass.data
 
-import typeclass.Semigroup
+import typeclass.{Monoid, Semigroup}
 
 import scalaprops.Gen
 
@@ -11,6 +11,11 @@ object Last {
 
   implicit def semigroup[A]: Semigroup[Last[A]] = new Semigroup[Last[A]] {
     def combine(x: Last[A], y: Last[A]): Last[A] = Last(y.value.orElse(x.value))
+  }
+
+  implicit def monoid[A]: Monoid[Last[A]] = new Monoid[Last[A]] {
+    def combine(x: Last[A], y: Last[A]): Last[A] = Last(y.value.orElse(x.value))
+    override def empty: Last[A] = Last.empty
   }
 
   def empty[A] = Last(None: Option[A])
